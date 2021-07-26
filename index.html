@@ -22,20 +22,44 @@
     <div class="container">
         <form class="col-md-6 m-auto py-5">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <input id="cityName" type="text" class="form-control" placeholder="Enter a location for Weather ...">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger">Search</button>
+                    <button id="searchButton" type="button" class="btn btn-danger">Search</button>
                 </div>
             </div>
         </form>
         <div class="weather-status text-white text-center">
-            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
-            <h1>Dhaka</h1>
-            <h3><span>38.06</span>&deg;C</h3>
-            <h1 class="lead">Clouds</h1>
+            <img id="weatherImg" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="showCity"></h1>
+            <h3><span id="showTemp"></span>&deg;C</h3>
+            <h1 id="weather" class="lead"></h1>
         </div>
     </div>
 
 </body>
+
+<script>
+    const inputCity = document.getElementById('cityName');
+    const searchButton = document.getElementById('searchButton');
+    const showCitY = document.getElementById('showCity');
+    const showTemp = document.getElementById('showTemp');
+    const weather = document.getElementById('weather');
+    const weatherImg = document.getElementById('weatherImg');
+    
+
+    searchButton.addEventListener('click', function(){
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputCity.value}&appid=c934d75ccd16689808c4a6933cf42dd4&units=metric`)
+        .then(res => res.json())
+        .then(data => {
+        showCitY.innerText= data.name;
+        showTemp.innerText= data.main.temp;
+        weather.innerText = data.weather[0].main;
+        const icon = data.weather[0].icon;
+        weatherImg.src = `https://openweathermap.org/img/wn/${icon}@2x.png`
+    });
+
+    })
+
+</script>
 
 </html>
